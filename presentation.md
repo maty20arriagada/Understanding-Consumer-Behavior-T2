@@ -20,7 +20,7 @@ At the checkout screen of an e-commerce platform, consumers make a discrete choi
 
 ### Why Study Payment Method Choice?
 - **For Merchants**: Transaction fees vary (e.g., Credit Card 2% vs. UPI 0%). Merchant can steer choices.
-- **For Fintechs & Banks**: Understand what features (speed, safety, fees) attract users.
+- **For High-Value Segments (Electronics)**: Understand what features (speed, safety) attract buyers when spending large amounts.
 - **For Checkout Design**: Reduce cart abandonment by minimizing friction.
 
 ### Econometric Modeling
@@ -55,16 +55,15 @@ At the checkout screen of an e-commerce platform, consumers make a discrete choi
 
 ::: columns
 ::: {.column width="45%"}
-### Choice Distribution (N = 19,880)
-- **Credit Card**: 43.04%
-- **Debit Card**: 24.93%
-- **PayPal**: 20.54%
-- **UPI / Wallet**: 11.48%
+### Choice Distribution (N = 3,594 Electronics Orders)
+- **Credit Card**: 43.1%
+- **Debit Card**: 25.3%
+- **PayPal**: 19.8%
+- **UPI / Wallet**: 11.8%
 
-### High Demographic Homogeneity
-- **Age**: Average age is ~35.5 years across all payment choices.
-- **Gender**: Female percentage is ~48-50% in all groups.
-- **Order Value**: Mean order is ~$126 across all groups.
+### High Value, High Homogeneity
+- **Age**: Average age is ~35.7 years across all payment choices.
+- **Order Value**: Mean order is very high (~$255) reflecting electronics prices.
 :::
 ::: {.column width="55%"}
 \begin{table}
@@ -75,10 +74,10 @@ At the checkout screen of an e-commerce platform, consumers make a discrete choi
 \toprule
 Method & Mean Age & Pct Female & Mean Order \\
 \midrule
-Credit Card & 35.41 & 48.7\% & \$126.26 \\
-Debit Card & 35.67 & 48.2\% & \$127.34 \\
-PayPal & 35.56 & 50.4\% & \$124.90 \\
-UPI / Wallet & 35.67 & 49.1\% & \$127.15 \\
+Credit Card & 35.7 & 50.0\% & \$247.1 \\
+Debit Card & 35.9 & 48.9\% & \$261.2 \\
+PayPal & 35.3 & 51.2\% & \$257.5 \\
+UPI / Wallet & 35.7 & 53.2\% & \$271.8 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -132,12 +131,14 @@ UPI / Wallet & 35.67 & 49.1\% & \$127.15 \\
 To ensure our sample matches the econometric definition of a finalized checkout and a well-defined choice set.
 
 ### 1. Order Status Filter (Delivered/Returned)
-- Excluded `Cancelled` (1,456) and `Processing` (1,027) orders since checkouts were not completed.
-- *Sample size*: 25,000 $\rightarrow$ 22,517.
+- Excluded `Cancelled` and `Processing` orders since checkouts were not completed.
 
-### 2. Choice Set Filter (Top 4 Payment Methods)
-- Excluded Bank Transfer (832), BNPL (1,358), and Crypto (447) due to low volumes (<12% combined).
-- *Sample size*: 22,517 $\rightarrow$ **19,880 transactions** (Final Sample).
+### 2. Category Filter (Electronics)
+- Focused exclusively on the **Electronics** segment to reduce unobserved heterogeneity and analyze high-value purchases.
+
+### 3. Choice Set Filter (Top 4 Payment Methods)
+- Excluded Bank Transfer, BNPL, and Crypto due to low volumes.
+- *Sample size*: **3,594 transactions** (Final Sample).
 
 ### Handling Missing Ratings & Outliers
 - `customer_rating` has 11,723 missing records. Omitting them is unnecessary since ratings are post-purchase and do not affect checkout decisions.
@@ -166,28 +167,23 @@ $$U_{ij} = ASC_j + \beta_{price} \cdot \text{fee\_usd}_{ij} + \gamma_j \cdot X_i
 \begin{table}
 \centering
 \tiny
-\begin{tabular}{lrrrr}
+\begin{tabular}{lrrr}
 \toprule
-& \multicolumn{2}{c}{\textbf{Model 1 (Attribute-Only)}} & \multicolumn{2}{c}{\textbf{Model 2 (With ASCs)}} \\
-Variable & Estimate & p-value & Estimate & p-value \\
+Variable & Model 1 (Base) & Model 2 (ASC) & Model 3 (Nested Logit) \\
 \midrule
-$ASC_{Debit Card}$ & -- & -- & -0.6674 & < 2e-16 *** \\
-$ASC_{PayPal}$ & -- & -- & -0.7311 & < 2e-16 *** \\
-$ASC_{UPI}$ & -- & -- & -1.4153 & < 2e-16 *** \\
-Fee (USD) ($\beta_{price}$) & 0.0023 & 0.618 & -0.0038 & 0.420 \\
-Time (s) ($\beta_{time}$) & -0.2273 & < 2e-11 *** & -- & -- \\
-Security ($\beta_{quality}$) & 0.4182 & < 2e-14 *** & -- & -- \\
+Time ($\beta_{time}$) & -0.2055 *** & -- & -0.2104 *** \\
+Security ($\beta_{quality}$) & 0.4656 *** & -- & 0.4725 *** \\
+Fee ($\beta_{price}$) & -0.0045 & -0.0035 & -0.0046 \\
 \midrule
-Log-Likelihood & \multicolumn{2}{c}{-25,625.91} & \multicolumn{2}{c}{-25,492.30} \\
-AIC / BIC & \multicolumn{2}{c}{51,293.82 / 51,459.67} & \multicolumn{2}{c}{51,028.60 / 51,202.34} \\
-McFadden $R^2$ & \multicolumn{2}{c}{0.0000} & \multicolumn{2}{c}{0.0004} \\
+Log-Likelihood & -4,627.0 & -4,607.3 & -4,608.1 \\
+AIC & 9,296.1 & 9,258.7 & 9,260.2 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 - **Time** is negative and highly significant.
 - **Security** is positive and highly significant.
-- **Fee** is statistically insignificant in both models.
+- **Nested Structure (LR Test)**: Nested Logit vastly outperforms MNL ($p = 7.42 \times 10^{-10}$).
 
 ---
 
@@ -196,11 +192,11 @@ McFadden $R^2$ & \multicolumn{2}{c}{0.0000} & \multicolumn{2}{c}{0.0004} \\
 ## Econometric Interpretation and Volatility
 
 ### Willingness-to-Pay Estimates (Model 1)
-- **WTP for Speed**: $-\$98.51$ per second saved (implied sign-flip).
-- **WTP for Security**: $\$181.23$ per unit of security increase.
+- **WTP for Speed**: $\$44.97$ (statistically unstable).
+- **WTP for Security**: $-\$101.90$ (statistically unstable).
 
 ### Methodological Insights: Why are these values unstable?
-- The price coefficient ($\beta_{price} = 0.0023$) is statistically indistinguishable from zero ($p = 0.618$).
+- The price coefficient ($\beta_{price} = -0.0045$) is statistically indistinguishable from zero ($p = 0.508$).
 - In synthetic data, payment choices were generated independently of the tiny transaction fees.
 - When the cost coefficient is close to zero, dividing any other coefficient by it leads to extremely large and volatile values.
 - **Key Takeaway**: A cost attribute must have a robustly identified, statistically significant negative coefficient to serve as a reliable numeraire for converting utility into monetary value.
@@ -211,16 +207,14 @@ McFadden $R^2$ & \multicolumn{2}{c}{0.0000} & \multicolumn{2}{c}{0.0004} \\
 
 ## Summary of Findings
 
-### 1. Successful Setup of Choice Framework
-- Merged relational data and defined an estimation sample of 19,880 clean checkouts.
-- Defended decision to keep observations with missing customer ratings.
+### 1. Focused Analysis on Electronics
+- Isolated a clean sample of 3,594 electronics transactions.
 
-### 2. Confirmed Attribute Preferences
-- Checkout speed and payment security are powerful drivers of consumer utility.
+### 2. Revealed True Decision Structure (Nested Logit)
+- LR Tests strongly proved that consumers employ an explicitly nested decision-making process (Traditional Cards vs. Digital Wallets).
 
-### 3. Econometric Insight on Cost Identification
-- Uncovered that weakly identified price coefficients lead to unusable WTP estimations, highlighting a common hazard in discrete choice modeling.
+### 3. Confirmed Attribute Preferences
+- Checkout speed and payment security are powerful drivers of consumer utility for high-ticket electronics purchases.
 
-### 4. Next Steps for Homework 3
-- Introduce Nested Logit models (grouping Cards vs. Digital/Third Party methods).
-- Explore interaction terms to capture segment-specific cost sensitivities.
+### 4. Econometric Insight on Cost Identification
+- Uncovered that weakly identified price coefficients lead to unusable WTP estimations, highlighting a common hazard.

@@ -36,10 +36,10 @@ cat("Merged dataset size:", nrow(merged_data), "rows\n")
 # ------------------------------------------------------------------------------
 cat("\nDefining the estimation sample...\n")
 
-# Filter for United States segment
-cat("Filtering for United States segment...\n")
-merged_data <- merged_data %>% filter(country == "United States")
-cat("Observations after US filter:", nrow(merged_data), "\n\n")
+# Filter for Electronics category segment
+cat("Filtering for Electronics segment...\n")
+merged_data <- merged_data %>% filter(category == "Electronics")
+cat("Observations after Electronics filter:", nrow(merged_data), "\n\n")
 
 # A. Handle order status (exclude Cancelled and Processing)
 cat("Distribution of order_status before filtering:\n")
@@ -154,29 +154,29 @@ legend("topright", inset = c(-0.35, 0),
        bty = "n", border = NA, cex = 0.8)
 dev.off()
 
-# Plot 3: Payment Choices by Category (Top 10 Categories by sales)
-top_categories <- estimation_sample %>%
-  group_by(category) %>%
+# Plot 3: Payment Choices by Country (Top 10 Countries by sales)
+top_countries <- estimation_sample %>%
+  group_by(country) %>%
   summarize(count = n()) %>%
   arrange(desc(count)) %>%
   slice(1:10) %>%
-  pull(category)
+  pull(country)
 
-category_payment_pct <- table(estimation_sample$category, estimation_sample$payment_method)
-category_payment_pct <- prop.table(category_payment_pct, 1)[top_categories, , drop = FALSE]
+country_payment_pct <- table(estimation_sample$country, estimation_sample$payment_method)
+country_payment_pct <- prop.table(country_payment_pct, 1)[top_countries, ]
 
-png("output_plots/plot_choices_by_category.png", width = 1000, height = 600, res = 120)
-par(mar = c(10, 5, 4, 12), bg = "#fcfcfc", xpd = TRUE)
-barplot(t(category_payment_pct * 100),
-        col = modern_colors[colnames(category_payment_pct)],
+png("output_plots/plot_choices_by_country.png", width = 1000, height = 600, res = 120)
+par(mar = c(6, 5, 4, 12), bg = "#fcfcfc", xpd = TRUE)
+barplot(t(country_payment_pct * 100),
+        col = modern_colors[colnames(country_payment_pct)],
         border = NA,
         ylab = "Market Share (%)",
-        main = "Payment Method Choice by Category (Top 10)",
+        main = "Payment Method Choice by Country (Top 10)",
         col.main = "#1f2937", col.lab = "#374151",
         las = 2, cex.names = 0.8)
 legend("topright", inset = c(-0.25, 0),
-       legend = colnames(category_payment_pct),
-       fill = modern_colors[colnames(category_payment_pct)],
+       legend = colnames(country_payment_pct),
+       fill = modern_colors[colnames(country_payment_pct)],
        bty = "n", border = NA, cex = 0.8)
 dev.off()
 

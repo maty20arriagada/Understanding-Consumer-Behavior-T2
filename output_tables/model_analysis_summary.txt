@@ -2,24 +2,24 @@
 DISCRETE CHOICE MODEL COMPARISON & ANALYSIS
 ======================================================================
 Model 1 (Attribute-Only) Goodness-of-Fit:
-- Number of observations (N): 6167 
-- Log-Likelihood: -7939.841 
-- AIC: 15921.68 
-- BIC: 16062.95 
+- Number of observations (N): 3594 
+- Log-Likelihood: -4627.045 
+- AIC: 9296.09 
+- BIC: 9426.017 
 - McFadden R-squared:  
 
 Model 2 (ASC Model) Goodness-of-Fit:
-- Number of observations (N): 6167 
-- Log-Likelihood: -7910.346 
-- AIC: 15864.69 
-- BIC: 16012.69 
-- McFadden R-squared: 0.001255991 
+- Number of observations (N): 3594 
+- Log-Likelihood: -4607.343 
+- AIC: 9258.686 
+- BIC: 9394.8 
+- McFadden R-squared: 0.001386653 
 
 Model 3 (Nested Logit) Goodness-of-Fit:
-- Number of observations (N): 6167 
-- Log-Likelihood: -7927.442 
-- AIC: 15898.88 
-- BIC: 16046.88 
+- Number of observations (N): 3594 
+- Log-Likelihood: -4608.092 
+- AIC: 9260.184 
+- BIC: 9396.298 
 - McFadden R-squared:  
 
 ----------------------------------------------------------------------
@@ -32,21 +32,21 @@ Model 1: choice ~ fee_usd + processing_time + security_score | age + gender +
 Model 2: choice ~ fee_usd + processing_time + security_score | age + gender + 
     membership_tier - 1
   #Df  LogLik Df  Chisq Pr(>Chisq)    
-1  21 -7939.8                         
-2  22 -7927.4  1 24.798  6.366e-07 ***
+1  21 -4627.0                         
+2  22 -4608.1  1 37.906  7.424e-10 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 ----------------------------------------------------------------------
 WILLINGNESS-TO-PAY (WTP) ESTIMATION (MODEL 1)
 ----------------------------------------------------------------------
-Beta Fee (price sensitivity): 0.01014819  (p-value:  0.2407328 )
-Beta Time (speed sensitivity): -0.3535849  (p-value:  1.827942e-08 )
-Beta Security (trust sensitivity): 0.5119693  (p-value:  4.102167e-07 )
+Beta Fee (price sensitivity): -0.004569416  (p-value:  0.5088978 )
+Beta Time (speed sensitivity): -0.2055248  (p-value:  0.01282423 )
+Beta Security (trust sensitivity): 0.4656615  (p-value:  0.0004425273 )
 
 Willingness to Pay (WTP):
-- WTP to save 1 second of processing time: $ -34.84214 
-- WTP for 1 point increase in security score: $ 50.4493 
+- WTP to save 1 second of processing time: $ 44.97835 
+- WTP for 1 point increase in security score: $ -101.9083 
 
 Note on WTP Interpretation:
 Since beta_fee is positive and statistically insignificant, WTP results are positive/negative and unstable.

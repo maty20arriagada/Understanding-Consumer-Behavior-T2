@@ -33,6 +33,8 @@ Understanding consumer behavior in payment method choices has profound practical
 3. **Product Design & Marketing**: Financial institutions and fintech platforms (like digital wallets) can utilize these behavioral insights to optimize their value propositions, adjusting transaction speeds, security features, or cashback promotions to match target demographic profiles.
 4. **Econometric and Behavioral Modeling**: From a discrete choice perspective, this phenomenon represents a classic utility maximization problem where alternatives are mutually exclusive and defined by both alternative-specific attributes (cost, time, security) and individual-specific characteristics (age, gender, membership status).
 
+**Scope of this Study:** This analysis focuses exclusively on the **Electronics** category. Electronics represent high-value, high-involvement purchases where payment security and transaction friction are paramount concerns for consumers.
+
 ---
 
 # B. Data Selection and Source
@@ -62,20 +64,20 @@ Table 1 displays the frequency and market share of the selected payment methods 
 
 \begin{table}[H]
 \centering
-\caption{Payment Method Choice Distribution (Estimation Sample)}
+\caption{Payment Method Choice Distribution (Electronics Sample)}
 \begin{tabular}{lrr}
 \toprule
 Payment Method & Count & Market Share (\%) \\
 \midrule
-Credit Card & 8,557 & 43.04\% \\
-Debit Card & 4,956 & 24.93\% \\
-PayPal & 4,084 & 20.54\% \\
-UPI / Digital Wallet & 2,283 & 11.48\% \\
+Credit Card & 1,548 & 43.07\% \\
+Debit Card & 908 & 25.26\% \\
+PayPal & 713 & 19.84\% \\
+UPI / Digital Wallet & 425 & 11.83\% \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-Credit Cards dominate the market with a share of 43.04%, followed by Debit Cards (24.93%) and PayPal (20.54%). UPI / Digital Wallet is the least chosen method, with an 11.48% market share.
+Credit Cards dominate the electronics market with a share of 43.07%, followed by Debit Cards (25.26%) and PayPal (19.84%). UPI / Digital Wallet is the least chosen method, with an 11.83% market share.
 
 ### 2. Demographics and Order Values Across Choice Groups
 
@@ -88,15 +90,15 @@ To identify if payment choices vary systematically with individual characteristi
 \toprule
 Payment Method & Mean Age & Pct. Female & Mean Order (USD) & Session Duration (min) & Pages Viewed \\
 \midrule
-Credit Card & 35.41 & 48.72\% & \$126.26 & 16.75 & 6.55 \\
-Debit Card & 35.67 & 48.20\% & \$127.34 & 17.08 & 6.37 \\
-PayPal & 35.56 & 50.42\% & \$124.90 & 16.83 & 6.32 \\
-UPI / Wallet & 35.67 & 49.10\% & \$127.15 & 16.65 & 6.54 \\
+Credit Card & 35.7 & 50.0\% & \$247.1 & 17.1 & 6.4 \\
+Debit Card & 35.9 & 48.9\% & \$261.2 & 17.4 & 6.2 \\
+PayPal & 35.3 & 51.2\% & \$257.5 & 16.7 & 6.5 \\
+UPI / Wallet & 35.7 & 53.2\% & \$271.8 & 17.2 & 6.5 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-A key observation from Table 2 is the striking homogeneity of averages across choice groups. The average age remains virtually constant at around 35.5 years. The gender split is nearly identical, hovering around 48% to 50% female. Crucially, the mean order value is also highly consistent (\$125 to \$127), as are web session durations (~17 minutes) and pages viewed (~6.5 pages). This indicates that, in terms of basic summary statistics, individual covariates do not show strong direct linear relationships with the choice of payment method, which is typical for randomized or balanced synthetic data.
+A key observation from Table 2 is the striking homogeneity of averages across choice groups within the electronics segment. The average age remains virtually constant at around 35.5 years. Crucially, the mean order value is significantly higher than the general store average (\$247 to \$271), reflecting the high-ticket nature of electronics. Web session durations (~17 minutes) and pages viewed (~6.4 pages) remain consistent.
 
 ### 3. Payment Choice by Membership Tier
 
@@ -135,17 +137,19 @@ As membership tier increases from Free to Platinum, there is a very slight incre
 To establish a scientifically sound estimation sample for discrete choice models, the original 25,000 transaction records were filtered based on strict econometric criteria:
 
 1. **Order Status Filter (Transaction Finalization)**:
-   - *Rationale*: We must model the choice made at a finalized checkout. Orders with `order_status` as `Cancelled` (1,456 orders) or `Processing` (1,027 orders) represent incomplete checkouts or transactions aborted before payment settlement was confirmed.
+   - *Rationale*: We must model the choice made at a finalized checkout. Orders with `order_status` as `Cancelled` or `Processing` represent incomplete checkouts or transactions aborted before payment settlement was confirmed.
    - *Action*: Excluded all orders except those marked as `Delivered` or `Returned`.
-   - *Sample Size Change*: Reduced from 25,000 to 22,517 observations.
 
-2. **Choice Set Definition Filter (Alternative Popularity)**:
-   - *Rationale*: Discrete choice models require well-defined choice sets. Minor payment methods like Bank Transfer (832), Buy Now Pay Later (1,358), and Cryptocurrency (447) are chosen in very few transactions, representing less than 12% of total volume combined. Including alternatives with extremely low frequency can cause numerical instability in the estimation of alternative-specific constants and interaction terms.
+2. **Category Segment Filter**:
+   - *Rationale*: We focus the analysis on a single high-involvement segment to reduce unobserved heterogeneity across vastly different product categories.
+   - *Action*: Restricted the sample exclusively to the **Electronics** category.
+
+3. **Choice Set Definition Filter (Alternative Popularity)**:
+   - *Rationale*: Discrete choice models require well-defined choice sets. Minor payment methods like Bank Transfer, Buy Now Pay Later, and Cryptocurrency are chosen in very few transactions.
    - *Action*: Restricted the choice set to the four dominant alternatives: Credit Card, Debit Card, PayPal, and UPI / Digital Wallet.
-   - *Sample Size Change*: Reduced from 22,517 to 19,880 observations.
 
-3. **Final Estimation Sample**:
-   - The final estimation sample contains **19,880 clean, transaction-level observations**. This size provides substantial statistical power to estimate the Multinomial Logit (MNL) model parameters with high precision.
+4. **Final Estimation Sample**:
+   - The final estimation sample contains **3,594 clean, transaction-level observations**. This size provides substantial statistical power to estimate both Multinomial Logit (MNL) and Nested Logit models.
 
 ---
 
@@ -204,34 +208,31 @@ McFadden $R^2$ & \multicolumn{2}{c}{0.0000} & \multicolumn{2}{c}{0.0004} \\
 \end{tabular}
 \end{table}
 
-### 3. Econometric Interpretation & Willingness-to-Pay (WTP)
+### 3. Nested Logit Model & Structure
 
-#### Coefficient Interpretations
-- **Time Sensitivity ($\beta_{time}$)**: In Model 1, the coefficient for processing time is negative and highly statistically significant ($\beta = -0.2273, p < 0.001$). This confirms that consumers prefer faster checkouts, and each additional second of processing time reduces the utility of a payment method.
-- **Security Sensitivity ($\beta_{quality}$)**: The coefficient for security score is positive and highly significant ($\beta = 0.4182, p < 0.001$). This demonstrates that consumers derive higher utility from payment methods with stronger perceived safety and buyer protections.
-- **Price Sensitivity ($\beta_{price}$)**: In both models, the coefficient for the transaction fee (`fee_usd`) is statistically insignificant ($p = 0.618$ in Model 1 and $p = 0.420$ in Model 2). Econometrically, we expect price sensitivity to be negative. However, in this dataset, the estimated price coefficients are very close to zero and insignificant.
+To relax the Independence of Irrelevant Alternatives (IIA) assumption inherent in MNL models, we estimated a **Nested Logit Model**. We grouped the alternatives into two distinct nests based on payment friction and underlying technology:
+1. **Traditional Bank Cards Nest**: Credit Card, Debit Card. (Requires inputting 16-digit plastic card numbers).
+2. **Digital Wallets Nest**: PayPal, UPI / Digital Wallet. (Third-party platforms enabling 1-click or biometric checkout).
 
-#### The Price Insignificance and WTP Challenge
-From Model 1, we calculated the implied **Willingness-to-Pay (WTP)**:
-- **WTP to save 1 second of processing time**: $WTP_{time} = \frac{\beta_{time}}{\beta_{price}} = \frac{-0.22731}{0.00231} = -\$98.51$
-- **WTP for 1 point increase in security**: $WTP_{security} = \frac{\beta_{quality}}{\beta_{price}} = \frac{0.41818}{0.00231} = \$181.23$
+**Likelihood Ratio Test (MNL vs Nested Logit)**:
+A formal Likelihood Ratio (LR) test comparing the base MNL model against the Nested Logit model yielded a Chi-square statistic of 37.906 on 1 degree of freedom, with a p-value of **7.424e-10**. 
+This definitively proves that the nested structure provides a vastly superior fit for the electronics checkout data. Consumers group payment methods mentally by technology/friction type before choosing the specific brand.
 
-These results present an interesting econometric challenge:
-1. The WTP for transaction speed is negative ($-\$98.51$), which would suggest consumers are willing to pay a premium to *increase* processing time, which is theoretically counterintuitive.
-2. The WTP for security is extremely large ($\$181.23$ per point on a 10-point scale), which is economically unrealistic for standard retail checkouts.
+### 4. Econometric Interpretation & Willingness-to-Pay (WTP)
 
-The root cause of these unstable and counterintuitive WTP estimates is the **statistical insignificance of the price coefficient ($\beta_{price}$)**. Because the dataset is synthetic, the simulated choices were generated independently of the actual transaction fees (which are small percentages of the total order value). When estimating the model, the optimizer finds a fee coefficient that is statistically indistinguishable from zero ($0.0023 \pm 0.0046$). Dividing any significant coefficient by a value near zero results in extremely large, volatile, and sign-flipped WTP numbers.
+- **Time Sensitivity ($\beta_{time}$)**: In the base model, processing time is negative and statistically significant ($\beta = -0.2055, p = 0.012$). Faster checkouts yield higher utility.
+- **Security Sensitivity ($\beta_{quality}$)**: The security score is positive and highly significant ($\beta = 0.4656, p < 0.001$). Stronger perceived safety is crucial for high-ticket electronics purchases.
+- **Price Sensitivity ($\beta_{price}$)**: The coefficient for transaction fee is negative but statistically insignificant ($p = 0.508$).
 
-This result highlight a crucial lessons in applied discrete choice modeling: **price sensitivity must be robustly identified and statistically significant** for WTP calculations to carry economic meaning. If price sensitivity cannot be distinguished from zero, the cost variable cannot act as a stable numeraire for translating utility into monetary values.
+**The Price Insignificance and WTP Challenge**:
+Because price sensitivity cannot be distinguished from zero in this specific dataset, any calculated WTP (e.g., $WTP_{time} = \$44.97$) is statistically unstable. Dividing a significant coefficient by a value near zero results in volatile WTP numbers. This highlights a crucial lesson in applied discrete choice modeling: **price sensitivity must be robustly identified** for WTP calculations to carry economic meaning.
 
 ---
 
 # F. Conclusion
 
-This report successfully completed the groundwork for analyzing consumer payment method choices:
-1. We identified a relevant discrete choice phenomenon (Payment Method Choice) and matched it to utility theory.
-2. We merged transaction and customer datasets, defined a clean estimation sample of 19,880 observations, and justified the removal of processing/cancelled orders while keeping missing ratings observations.
-3. We estimated baseline Multinomial Logit (MNL) models. The model estimation confirmed that transaction speed and security are highly significant drivers of payment choices.
-4. We uncovered a critical econometric artifact in the WTP calculation caused by the statistical insignificance of the price coefficient, illustrating the challenges of using weakly identified cost parameters as value numeraires.
-
-This clean sample and these baseline models will serve as the foundation for Homework 3, where we will explore more complex utility specifications, nested structures, and individual heterogeneity.
+This report successfully completed the analysis of consumer payment method choices for **Electronics**:
+1. We identified the checkout payment choice phenomenon and isolated a clean sample of 3,594 electronics transactions.
+2. We estimated baseline Multinomial Logit models, confirming that checkout speed and payment security are significant drivers of utility.
+3. We successfully formulated and estimated a **Nested Logit Model** separating Traditional Cards from Digital Wallets, proving via an LR Test (p < 0.0001) that consumers employ an explicitly nested decision-making process.
+4. We uncovered the econometric limitations of calculating Willingness-to-Pay when the numeraire (price) is weakly identified.

@@ -8,64 +8,64 @@ mlogit(formula = choice ~ fee_usd + processing_time + security_score |
 
 Frequencies of alternatives:choice
          Credit Card           Debit Card               PayPal 
-             0.43263              0.24193              0.20739 
+             0.43072              0.25264              0.19839 
 UPI / Digital Wallet 
-             0.11805 
+             0.11825 
 
 nr method
-4 iterations, 0h:0m:1s 
-g'(-H)^-1g = 2.49E-07 
+4 iterations, 0h:0m:0s 
+g'(-H)^-1g = 2.3E-07 
 gradient close to zero 
 
 Coefficients :
-                                               Estimate Std. Error  z-value
-fee_usd                                       0.0101482  0.0086503   1.1732
-processing_time                              -0.3535849  0.0628311  -5.6275
-security_score                                0.5119693  0.1010967   5.0642
-age:Debit Card                                0.0038969  0.0028862   1.3502
-age:PayPal                                   -0.0061615  0.0028242  -2.1817
-age:UPI / Digital Wallet                     -0.0262001  0.0020578 -12.7321
-genderMale:Debit Card                        -0.0774091  0.0661213  -1.1707
-genderMale:PayPal                            -0.1070611  0.0685332  -1.5622
-genderMale:UPI / Digital Wallet              -0.3355006  0.0817178  -4.1056
-genderOther:Debit Card                        0.1063681  0.1975415   0.5385
-genderOther:PayPal                            0.0655363  0.2078449   0.3153
-genderOther:UPI / Digital Wallet             -0.0074638  0.2436276  -0.0306
-membership_tierGold:Debit Card                0.0590478  0.0930717   0.6344
-membership_tierGold:PayPal                   -0.0349828  0.0984140  -0.3555
-membership_tierGold:UPI / Digital Wallet     -0.1652485  0.1196382  -1.3812
-membership_tierPlatinum:Debit Card            0.1685273  0.1186579   1.4203
-membership_tierPlatinum:PayPal               -0.1331084  0.1341883  -0.9920
-membership_tierPlatinum:UPI / Digital Wallet -0.0953730  0.1580674  -0.6034
-membership_tierSilver:Debit Card              0.0104635  0.0829836   0.1261
-membership_tierSilver:PayPal                  0.0856126  0.0842367   1.0163
-membership_tierSilver:UPI / Digital Wallet   -0.1014652  0.1032854  -0.9824
+                                               Estimate Std. Error z-value
+fee_usd                                      -0.0045694  0.0069175 -0.6606
+processing_time                              -0.2055248  0.0825861 -2.4886
+security_score                                0.4656615  0.1325414  3.5133
+age:Debit Card                               -0.0011457  0.0037167 -0.3083
+age:PayPal                                   -0.0128769  0.0037292 -3.4530
+age:UPI / Digital Wallet                     -0.0261145  0.0026431 -9.8802
+genderMale:Debit Card                         0.0104312  0.0855457  0.1219
+genderMale:PayPal                            -0.1300855  0.0909855 -1.4297
+genderMale:UPI / Digital Wallet              -0.3486677  0.1062657 -3.2811
+genderOther:Debit Card                        0.2761473  0.2540894  1.0868
+genderOther:PayPal                           -0.0465652  0.2934353 -0.1587
+genderOther:UPI / Digital Wallet              0.2255417  0.3075138  0.7334
+membership_tierGold:Debit Card                0.0606080  0.1208592  0.5015
+membership_tierGold:PayPal                   -0.1185831  0.1322473 -0.8967
+membership_tierGold:UPI / Digital Wallet     -0.0483432  0.1521993 -0.3176
+membership_tierPlatinum:Debit Card            0.2270545  0.1612224  1.4083
+membership_tierPlatinum:PayPal                0.0406518  0.1774887  0.2290
+membership_tierPlatinum:UPI / Digital Wallet -0.0752459  0.2184202 -0.3445
+membership_tierSilver:Debit Card              0.1254368  0.1058253  1.1853
+membership_tierSilver:PayPal                 -0.0718799  0.1151095 -0.6244
+membership_tierSilver:UPI / Digital Wallet   -0.1228677  0.1359905 -0.9035
                                               Pr(>|z|)    
-fee_usd                                        0.24073    
-processing_time                              1.828e-08 ***
-security_score                               4.102e-07 ***
-age:Debit Card                                 0.17696    
-age:PayPal                                     0.02913 *  
+fee_usd                                      0.5088978    
+processing_time                              0.0128242 *  
+security_score                               0.0004425 ***
+age:Debit Card                               0.7578884    
+age:PayPal                                   0.0005543 ***
 age:UPI / Digital Wallet                     < 2.2e-16 ***
-genderMale:Debit Card                          0.24171    
-genderMale:PayPal                              0.11825    
-genderMale:UPI / Digital Wallet              4.033e-05 ***
-genderOther:Debit Card                         0.59026    
-genderOther:PayPal                             0.75252    
-genderOther:UPI / Digital Wallet               0.97556    
-membership_tierGold:Debit Card                 0.52580    
-membership_tierGold:PayPal                     0.72224    
-membership_tierGold:UPI / Digital Wallet       0.16721    
-membership_tierPlatinum:Debit Card             0.15553    
-membership_tierPlatinum:PayPal                 0.32122    
-membership_tierPlatinum:UPI / Digital Wallet   0.54626    
-membership_tierSilver:Debit Card               0.89966    
-membership_tierSilver:PayPal                   0.30947    
-membership_tierSilver:UPI / Digital Wallet     0.32591    
+genderMale:Debit Card                        0.9029485    
+genderMale:PayPal                            0.1527920    
+genderMale:UPI / Digital Wallet              0.0010341 ** 
+genderOther:Debit Card                       0.2771202    
+genderOther:PayPal                           0.8739133    
+genderOther:UPI / Digital Wallet             0.4632925    
+membership_tierGold:Debit Card               0.6160362    
+membership_tierGold:PayPal                   0.3698912    
+membership_tierGold:UPI / Digital Wallet     0.7507649    
+membership_tierPlatinum:Debit Card           0.1590329    
+membership_tierPlatinum:PayPal               0.8188388    
+membership_tierPlatinum:UPI / Digital Wallet 0.7304698    
+membership_tierSilver:Debit Card             0.2358914    
+membership_tierSilver:PayPal                 0.5323331    
+membership_tierSilver:UPI / Digital Wallet   0.3662595    
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Log-Likelihood: -7939.8
+Log-Likelihood: -4627
 
 
 ======================================================================
@@ -78,68 +78,68 @@ mlogit(formula = choice ~ fee_usd | age + gender + membership_tier,
 
 Frequencies of alternatives:choice
          Credit Card           Debit Card               PayPal 
-             0.43263              0.24193              0.20739 
+             0.43072              0.25264              0.19839 
 UPI / Digital Wallet 
-             0.11805 
+             0.11825 
 
 nr method
-4 iterations, 0h:0m:1s 
-g'(-H)^-1g = 9.55E-08 
+4 iterations, 0h:0m:0s 
+g'(-H)^-1g = 7.34E-08 
 gradient close to zero 
 
 Coefficients :
-                                               Estimate Std. Error z-value
-(Intercept):Debit Card                       -0.7960869  0.1181012 -6.7407
-(Intercept):PayPal                           -0.8602989  0.1233830 -6.9726
-(Intercept):UPI / Digital Wallet             -1.1750264  0.1514649 -7.7577
-fee_usd                                       0.0048308  0.0087393  0.5528
-age:Debit Card                                0.0060794  0.0028958  2.0994
-age:PayPal                                    0.0029983  0.0030619  0.9792
-age:UPI / Digital Wallet                     -0.0012777  0.0037885 -0.3373
-genderMale:Debit Card                        -0.0620873  0.0657210 -0.9447
-genderMale:PayPal                            -0.0441623  0.0691080 -0.6390
-genderMale:UPI / Digital Wallet              -0.1779694  0.0853976 -2.0840
-genderOther:Debit Card                        0.1239458  0.1974243  0.6278
-genderOther:PayPal                            0.1371151  0.2080334  0.6591
-genderOther:UPI / Digital Wallet              0.1658901  0.2443218  0.6790
-membership_tierGold:Debit Card                0.0727119  0.0928315  0.7833
-membership_tierGold:PayPal                    0.0243315  0.0987480  0.2464
-membership_tierGold:UPI / Digital Wallet     -0.0100148  0.1217973 -0.0822
-membership_tierPlatinum:Debit Card            0.1793640  0.1184804  1.5139
-membership_tierPlatinum:PayPal               -0.0872949  0.1343334 -0.6498
-membership_tierPlatinum:UPI / Digital Wallet  0.0247437  0.1589535  0.1557
-membership_tierSilver:Debit Card              0.0232624  0.0827108  0.2813
-membership_tierSilver:PayPal                  0.1405810  0.0845799  1.6621
-membership_tierSilver:UPI / Digital Wallet    0.0429276  0.1056266  0.4064
+                                                Estimate  Std. Error z-value
+(Intercept):Debit Card                       -7.0090e-01  1.5433e-01 -4.5416
+(Intercept):PayPal                           -6.2104e-01  1.6369e-01 -3.7940
+(Intercept):UPI / Digital Wallet             -1.3123e+00  2.0083e-01 -6.5342
+fee_usd                                      -9.2892e-03  7.0066e-03 -1.3258
+age:Debit Card                                1.3707e-03  3.7247e-03  0.3680
+age:PayPal                                   -2.8860e-03  4.0482e-03 -0.7129
+age:UPI / Digital Wallet                      5.3762e-05  4.8828e-03  0.0110
+genderMale:Debit Card                         2.9602e-02  8.4971e-02  0.3484
+genderMale:PayPal                            -5.3501e-02  9.1840e-02 -0.5825
+genderMale:UPI / Digital Wallet              -1.5992e-01  1.1207e-01 -1.4269
+genderOther:Debit Card                        2.8907e-01  2.5391e-01  1.1385
+genderOther:PayPal                            1.2090e-02  2.9324e-01  0.0412
+genderOther:UPI / Digital Wallet              3.6313e-01  3.0769e-01  1.1802
+membership_tierGold:Debit Card                7.4906e-02  1.2053e-01  0.6214
+membership_tierGold:PayPal                   -6.2323e-02  1.3244e-01 -0.4706
+membership_tierGold:UPI / Digital Wallet      1.0298e-01  1.5481e-01  0.6652
+membership_tierPlatinum:Debit Card            2.3857e-01  1.6099e-01  1.4820
+membership_tierPlatinum:PayPal                9.0964e-02  1.7748e-01  0.5125
+membership_tierPlatinum:UPI / Digital Wallet  5.5815e-02  2.1953e-01  0.2542
+membership_tierSilver:Debit Card              1.4040e-01  1.0545e-01  1.3315
+membership_tierSilver:PayPal                 -4.6411e-03  1.1556e-01 -0.0402
+membership_tierSilver:UPI / Digital Wallet    5.1302e-02  1.3971e-01  0.3672
                                               Pr(>|z|)    
-(Intercept):Debit Card                       1.576e-11 ***
-(Intercept):PayPal                           3.112e-12 ***
-(Intercept):UPI / Digital Wallet             8.660e-15 ***
-fee_usd                                        0.58042    
-age:Debit Card                                 0.03578 *  
-age:PayPal                                     0.32746    
-age:UPI / Digital Wallet                       0.73592    
-genderMale:Debit Card                          0.34481    
-genderMale:PayPal                              0.52280    
-genderMale:UPI / Digital Wallet                0.03716 *  
-genderOther:Debit Card                         0.53013    
-genderOther:PayPal                             0.50983    
-genderOther:UPI / Digital Wallet               0.49715    
-membership_tierGold:Debit Card                 0.43347    
-membership_tierGold:PayPal                     0.80537    
-membership_tierGold:UPI / Digital Wallet       0.93447    
-membership_tierPlatinum:Debit Card             0.13006    
-membership_tierPlatinum:PayPal                 0.51580    
-membership_tierPlatinum:UPI / Digital Wallet   0.87630    
-membership_tierSilver:Debit Card               0.77852    
-membership_tierSilver:PayPal                   0.09649 .  
-membership_tierSilver:UPI / Digital Wallet     0.68444    
+(Intercept):Debit Card                       5.583e-06 ***
+(Intercept):PayPal                           0.0001482 ***
+(Intercept):UPI / Digital Wallet             6.397e-11 ***
+fee_usd                                      0.1849117    
+age:Debit Card                               0.7128579    
+age:PayPal                                   0.4759107    
+age:UPI / Digital Wallet                     0.9912151    
+genderMale:Debit Card                        0.7275536    
+genderMale:PayPal                            0.5602022    
+genderMale:UPI / Digital Wallet              0.1535993    
+genderOther:Debit Card                       0.2549134    
+genderOther:PayPal                           0.9671136    
+genderOther:UPI / Digital Wallet             0.2379187    
+membership_tierGold:Debit Card               0.5343050    
+membership_tierGold:PayPal                   0.6379479    
+membership_tierGold:UPI / Digital Wallet     0.5059078    
+membership_tierPlatinum:Debit Card           0.1383523    
+membership_tierPlatinum:PayPal               0.6082838    
+membership_tierPlatinum:UPI / Digital Wallet 0.7993039    
+membership_tierSilver:Debit Card             0.1830343    
+membership_tierSilver:PayPal                 0.9679634    
+membership_tierSilver:UPI / Digital Wallet   0.7134726    
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Log-Likelihood: -7910.3
-McFadden R^2:  0.001256 
-Likelihood ratio test : chisq = 19.896 (p.value = 0.40088)
+Log-Likelihood: -4607.3
+McFadden R^2:  0.0013867 
+Likelihood ratio test : chisq = 12.795 (p.value = 0.84888)
 
 
 ======================================================================
@@ -154,63 +154,63 @@ mlogit(formula = choice ~ fee_usd + processing_time + security_score |
 
 Frequencies of alternatives:choice
          Credit Card           Debit Card               PayPal 
-             0.43263              0.24193              0.20739 
+             0.43072              0.25264              0.19839 
 UPI / Digital Wallet 
-             0.11805 
+             0.11825 
 
 bfgs method
-30 iterations, 0h:0m:3s 
-g'(-H)^-1g = 8.66E-07 
-gradient close to zero 
+7 iterations, 0h:0m:1s 
+g'(-H)^-1g = 0.365 
+last step couldn't find higher value 
 
 Coefficients :
-                                              Estimate Std. Error z-value
-fee_usd                                       0.012538   0.032810  0.3821
-processing_time                              -2.390899   0.968240 -2.4693
-security_score                                3.173106   1.724729  1.8398
-age:Debit Card                                0.013357   0.021130  0.6322
-age:PayPal                                    0.054168   0.024506  2.2104
-age:UPI / Digital Wallet                     -0.094239   0.033723 -2.7945
-genderMale:Debit Card                        -0.634965   0.543212 -1.1689
-genderMale:PayPal                             0.163328   0.284219  0.5747
-genderMale:UPI / Digital Wallet              -1.141266   0.545259 -2.0931
-genderOther:Debit Card                        0.471970   1.406392  0.3356
-genderOther:PayPal                            0.738885   0.899025  0.8219
-genderOther:UPI / Digital Wallet             -0.529099   1.228513 -0.4307
-membership_tierGold:Debit Card                0.332326   0.674365  0.4928
-membership_tierGold:PayPal                    0.640371   0.463713  1.3810
-membership_tierGold:UPI / Digital Wallet     -0.867895   0.645552 -1.3444
-membership_tierPlatinum:Debit Card            1.163082   0.987293  1.1781
-membership_tierPlatinum:PayPal                0.572262   0.608249  0.9408
-membership_tierPlatinum:UPI / Digital Wallet -0.126936   0.752567 -0.1687
-membership_tierSilver:Debit Card              0.033777   0.584583  0.0578
-membership_tierSilver:PayPal                  0.648299   0.396511  1.6350
-membership_tierSilver:UPI / Digital Wallet   -0.870915   0.606250 -1.4366
-iv                                            7.101532   3.297213  2.1538
+                                                Estimate  Std. Error z-value
+fee_usd                                       0.00728508  0.01615727  0.4509
+processing_time                               0.10216541  0.26532457  0.3851
+security_score                               -1.61791475  0.53751376 -3.0100
+age:Debit Card                               -0.00193002  0.00960597 -0.2009
+age:PayPal                                   -0.00016231  0.00751479 -0.0216
+age:UPI / Digital Wallet                     -0.00250094  0.00957260 -0.2613
+genderMale:Debit Card                         0.00854255  0.22352884  0.0382
+genderMale:PayPal                            -0.20396906  0.17512339 -1.1647
+genderMale:UPI / Digital Wallet               0.08072053  0.25917409  0.3115
+genderOther:Debit Card                       -0.77165704  0.71830537 -1.0743
+genderOther:PayPal                           -0.01539389  0.53884692 -0.0286
+genderOther:UPI / Digital Wallet             -0.59427684  0.66385299 -0.8952
+membership_tierGold:Debit Card               -0.16892162  0.32107961 -0.5261
+membership_tierGold:PayPal                    0.00020844  0.23670443  0.0009
+membership_tierGold:UPI / Digital Wallet     -0.20252790  0.31927327 -0.6343
+membership_tierPlatinum:Debit Card           -0.61701660  0.47457262 -1.3002
+membership_tierPlatinum:PayPal               -0.35068219  0.34477365 -1.0171
+membership_tierPlatinum:UPI / Digital Wallet -0.00293460  0.47207058 -0.0062
+membership_tierSilver:Debit Card             -0.38083403  0.30446920 -1.2508
+membership_tierSilver:PayPal                 -0.11955314  0.21708974 -0.5507
+membership_tierSilver:UPI / Digital Wallet   -0.20861660  0.28584533 -0.7298
+iv                                           -2.62910297  0.95295115 -2.7589
                                              Pr(>|z|)   
-fee_usd                                      0.702352   
-processing_time                              0.013537 * 
-security_score                               0.065802 . 
-age:Debit Card                               0.527278   
-age:PayPal                                   0.027074 * 
-age:UPI / Digital Wallet                     0.005198 **
-genderMale:Debit Card                        0.242441   
-genderMale:PayPal                            0.565525   
-genderMale:UPI / Digital Wallet              0.036343 * 
-genderOther:Debit Card                       0.737180   
-genderOther:PayPal                           0.411148   
-genderOther:UPI / Digital Wallet             0.666699   
-membership_tierGold:Debit Card               0.622155   
-membership_tierGold:PayPal                   0.167289   
-membership_tierGold:UPI / Digital Wallet     0.178812   
-membership_tierPlatinum:Debit Card           0.238776   
-membership_tierPlatinum:PayPal               0.346789   
-membership_tierPlatinum:UPI / Digital Wallet 0.866056   
-membership_tierSilver:Debit Card             0.953924   
-membership_tierSilver:PayPal                 0.102047   
-membership_tierSilver:UPI / Digital Wallet   0.150843   
-iv                                           0.031256 * 
+fee_usd                                      0.652072   
+processing_time                              0.700194   
+security_score                               0.002613 **
+age:Debit Card                               0.840762   
+age:PayPal                                   0.982768   
+age:UPI / Digital Wallet                     0.793891   
+genderMale:Debit Card                        0.969515   
+genderMale:PayPal                            0.244134   
+genderMale:UPI / Digital Wallet              0.755456   
+genderOther:Debit Card                       0.282700   
+genderOther:PayPal                           0.977209   
+genderOther:UPI / Digital Wallet             0.370684   
+membership_tierGold:Debit Card               0.598815   
+membership_tierGold:PayPal                   0.999297   
+membership_tierGold:UPI / Digital Wallet     0.525859   
+membership_tierPlatinum:Debit Card           0.193549   
+membership_tierPlatinum:PayPal               0.309088   
+membership_tierPlatinum:UPI / Digital Wallet 0.995040   
+membership_tierSilver:Debit Card             0.211003   
+membership_tierSilver:PayPal                 0.581834   
+membership_tierSilver:UPI / Digital Wallet   0.465498   
+iv                                           0.005800 **
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Log-Likelihood: -7927.4
+Log-Likelihood: -4608.1
