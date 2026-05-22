@@ -1,15 +1,15 @@
 ---
-title: "Homework Assignment No. 2"
-subtitle: "Understanding Consumer Behavior through Discrete Choice Models"
-author: "Matias Arriagada R."
-date: "May 2026"
+title: "Tarea No. 2"
+subtitle: "Comprendiendo el Comportamiento del Consumidor a través de Modelos de Elección Discreta"
+author: "Matías Arriagada R."
+date: "Mayo 2026"
 geometry: margin=1in
 fontsize: 11pt
 fontfamily: mathpazo
 header-includes: |
   \usepackage{fancyhdr}
   \pagestyle{fancy}
-  \fancyhead[L]{Homework 2: Consumer Choice Analysis}
+  \fancyhead[L]{Tarea 2: Análisis de Elección del Consumidor}
   \fancyhead[R]{Universidad de Concepción}
   \fancyfoot[C]{\thepage}
   \usepackage{booktabs}
@@ -23,216 +23,219 @@ header-includes: |
 
 \newpage
 
-# A. Identification of the Study Phenomenon
+# A. Identificación del Fenómeno de Estudio
 
-In the modern digital economy, the final stage of any e-commerce transaction—the checkout—represents a critical juncture for both consumers and merchants. At this moment, consumers must make a discrete choice regarding how to settle their transaction. This study models the **Payment Method Choice** made by consumers on an e-commerce platform.
+En la economía digital moderna, la etapa final de cualquier transacción de comercio electrónico —el proceso de pago (checkout)— representa un punto crítico tanto para consumidores como para comerciantes. En este momento, los consumidores deben hacer una elección discreta respecto a cómo liquidar su transacción. Este estudio modela la **Elección del Método de Pago** realizada por los consumidores en una plataforma de e-commerce.
 
-Understanding consumer behavior in payment method choices has profound practical and theoretical implications:
-1. **Financial Optimization for Merchants**: Different payment methods carry distinct transaction fees (merchant discount rates) and processing overheads. By understanding consumer sensitivity to payment characteristics, merchants can design incentives (e.g., discounts for specific methods) to steer users towards lower-cost options.
-2. **Checkout Optimization and Conversion Rates**: Transaction speed and security are major determinants of cart abandonment. Dissecting how different demographics value time versus security helps in redesigning the checkout interface to reduce friction.
-3. **Product Design & Marketing**: Financial institutions and fintech platforms (like digital wallets) can utilize these behavioral insights to optimize their value propositions, adjusting transaction speeds, security features, or cashback promotions to match target demographic profiles.
-4. **Econometric and Behavioral Modeling**: From a discrete choice perspective, this phenomenon represents a classic utility maximization problem where alternatives are mutually exclusive and defined by both alternative-specific attributes (cost, time, security) and individual-specific characteristics (age, gender, membership status).
+Comprender el comportamiento del consumidor en las elecciones de métodos de pago tiene profundas implicaciones prácticas y teóricas:
+1. **Optimización Financiera para Comerciantes**: Diferentes métodos de pago conllevan distintas tarifas de transacción (tasas de descuento para comerciantes) y costos de procesamiento. Al comprender la sensibilidad del consumidor a las características del pago, los comerciantes pueden diseñar incentivos (por ejemplo, descuentos para métodos específicos) para orientar a los usuarios hacia opciones de menor costo.
+2. **Optimización del Checkout y Tasas de Conversión**: La velocidad de la transacción y la seguridad son determinantes clave del abandono del carrito. Analizar cómo diferentes grupos demográficos valoran el tiempo frente a la seguridad ayuda a rediseñar la interfaz de pago para reducir la fricción.
+3. **Diseño de Productos y Marketing**: Las instituciones financieras y las plataformas fintech (como las billeteras digitales) pueden utilizar estos insights de comportamiento para optimizar sus propuestas de valor, ajustando las velocidades de transacción, características de seguridad o promociones de cashback para coincidir con perfiles demográficos objetivo.
+4. **Modelación Econométrica y Conductual**: Desde una perspectiva de elección discreta, este fenómeno representa un clásico problema de maximización de utilidad donde las alternativas son mutuamente excluyentes y están definidas tanto por atributos específicos de la alternativa (costo, tiempo, seguridad) como por características específicas del individuo (edad, género, nivel de membresía).
 
-**Scope of this Study:** This analysis focuses exclusively on the **Electronics** category. Electronics represent high-value, high-involvement purchases where payment security and transaction friction are paramount concerns for consumers.
-
----
-
-# B. Data Selection and Source
-
-The analysis is based on a comprehensive dataset of an e-commerce platform's transactions. The data is divided into two primary relational tables:
-1. **Orders Data (`orders.csv`)**: Captures transaction-level information, including `order_id`, `customer_id`, `total_amount_usd`, the chosen `payment_method`, `order_status`, `delivery_days`, `session_duration_minutes`, `pages_viewed_before_purchase`, and `customer_rating`.
-2. **Customers Data (`customers.csv`)**: Captures demographic and historical profile information for each user, including `customer_id`, `country`, `age`, `gender`, `membership_tier` (Free, Silver, Gold, Platinum), and historical purchasing patterns (e.g., `total_spend_usd`, `total_orders`).
-
-To prepare the dataset for discrete choice modeling, we merged the two tables on the common key `customer_id`. The resulting merged dataset contains all necessary components of discrete choice theory:
-- **Mutually Exclusive Alternatives (Choice Set)**: The set of payment methods available at checkout. We focus on the top 4 options: **Credit Card**, **Debit Card**, **PayPal**, and **UPI / Digital Wallet**.
-- **The Choice Variable**: The actual payment method selected by the user for that specific transaction.
-- **Alternative-Specific Attributes**:
-  - **Transaction Fee (`fee_usd`)**: The direct cost incurred. We calculate this as a percentage of the total order value: Credit Card (2.0%), Debit Card (0.5%), PayPal (3.0%), and UPI / Digital Wallet (0.0%).
-  - **Processing Time (`processing_time`)**: Average checkout/settlement duration in seconds: Credit Card (2.0s), Debit Card (2.5s), PayPal (4.0s), and UPI / Digital Wallet (1.5s).
-  - **Security Score (`security_score`)**: Perceived security and protection level on a scale from 1 to 10: Credit Card (9.0), Debit Card (8.0), PayPal (9.5), and UPI / Digital Wallet (8.5).
-- **Decision-Maker Characteristics**: Individual characteristics merged from the customer profile: `age`, `gender`, and `membership_tier`.
-
----
-
-# C. Exploratory Data Analysis (EDA)
-
-An exhaustive Exploratory Data Analysis was performed in R to understand the distributions, correlations, and general structures within our sample.
-
-### 1. Payment Choice Distribution (Market Shares)
-
-Table 1 displays the frequency and market share of the selected payment methods within the cleaned sample.
+Para ilustrar este fenómeno de elección, la siguiente tabla resume la estructura teórica y los atributos clave (trade-offs) a los que se enfrenta un consumidor al momento de pagar:
 
 \begin{table}[H]
 \centering
-\caption{Payment Method Choice Distribution (Electronics Sample)}
+\caption{Características Teóricas del Conjunto de Elección (Checkout)}
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Método de Pago} & \textbf{Tipo / Nido} & \textbf{Fricción (Tiempo)} & \textbf{Tarifa Relativa} & \textbf{Seguridad Percibida} \\
+\midrule
+Tarjeta de Crédito & Tarjeta Bancaria & Media (2.0s) & Alta (2.0\%) & Muy Alta (9.0/10) \\
+Tarjeta de Débito & Tarjeta Bancaria & Alta (2.5s) & Baja (0.5\%) & Media (8.0/10) \\
+PayPal & Billetera Digital & Muy Alta (4.0s) & Muy Alta (3.0\%) & Muy Alta (9.5/10) \\
+UPI / Billetera & Billetera Digital & Baja (1.5s) & Nula (0.0\%) & Alta (8.5/10) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+**Alcance de este Estudio:** Este análisis se enfoca exclusivamente en la categoría de **Electrónica**. Los productos electrónicos representan compras de alto valor y alta implicación, donde la seguridad del pago y la fricción de la transacción son preocupaciones primordiales para los consumidores.
+
+---
+
+# B. Selección y Fuente de Datos
+
+El análisis se basa en un conjunto de datos completo de las transacciones de una plataforma de comercio electrónico. Los datos están divididos en dos tablas relacionales principales:
+1. **Datos de Órdenes (`orders.csv`)**: Captura información a nivel de transacción, incluyendo `order_id`, `customer_id`, `total_amount_usd`, el `payment_method` elegido, `order_status`, `delivery_days`, `session_duration_minutes`, `pages_viewed_before_purchase` y `customer_rating`.
+2. **Datos de Clientes (`customers.csv`)**: Captura información de perfil demográfico e histórico para cada usuario, incluyendo `customer_id`, `country`, `age`, `gender`, `membership_tier` (Gratis, Plata, Oro, Platino) y patrones históricos de compra (ej. `total_spend_usd`, `total_orders`).
+
+Para preparar el conjunto de datos para la modelación de elección discreta, fusionamos las dos tablas bajo la clave común `customer_id`. El conjunto de datos fusionado resultante contiene todos los componentes necesarios de la teoría de elección discreta:
+- **Alternativas Mutuamente Excluyentes (Conjunto de Elección)**: El conjunto de métodos de pago disponibles en la caja. Nos enfocamos en las 4 opciones principales: **Tarjeta de Crédito**, **Tarjeta de Débito**, **PayPal** y **UPI / Billetera Digital**.
+- **La Variable de Elección**: El método de pago real seleccionado por el usuario para esa transacción específica.
+- **Atributos Específicos de la Alternativa**:
+  - **Tarifa de Transacción (`fee_usd`)**: El costo directo incurrido. Lo calculamos como un porcentaje del valor total del pedido: Tarjeta de Crédito (2.0%), Tarjeta de Débito (0.5%), PayPal (3.0%) y UPI / Billetera Digital (0.0%).
+  - **Tiempo de Procesamiento (`processing_time`)**: Duración promedio del checkout/liquidación en segundos: Tarjeta de Crédito (2.0s), Tarjeta de Débito (2.5s), PayPal (4.0s) y UPI / Billetera Digital (1.5s).
+  - **Puntuación de Seguridad (`security_score`)**: Nivel de seguridad y protección percibido en una escala del 1 al 10: Tarjeta de Crédito (9.0), Tarjeta de Débito (8.0), PayPal (9.5) y UPI / Billetera Digital (8.5).
+- **Características del Tomador de Decisiones**: Características individuales provenientes del perfil del cliente: `age` (edad), `gender` (género) y `membership_tier` (nivel de membresía).
+
+---
+
+# C. Análisis Exploratorio de Datos (EDA)
+
+Se realizó un Análisis Exploratorio de Datos exhaustivo en R para comprender las distribuciones, correlaciones y estructuras generales dentro de nuestra muestra.
+
+### 1. Distribución de la Elección de Pago (Cuotas de Mercado)
+
+La Tabla 1 muestra la frecuencia y la cuota de mercado de los métodos de pago seleccionados dentro de la muestra limpia.
+
+\begin{table}[H]
+\centering
+\caption{Distribución de la Elección del Método de Pago (Muestra de Electrónica)}
 \begin{tabular}{lrr}
 \toprule
-Payment Method & Count & Market Share (\%) \\
+Método de Pago & Frecuencia & Cuota de Mercado (\%) \\
 \midrule
-Credit Card & 1,548 & 43.07\% \\
-Debit Card & 908 & 25.26\% \\
+Tarjeta de Crédito & 1,548 & 43.07\% \\
+Tarjeta de Débito & 908 & 25.26\% \\
 PayPal & 713 & 19.84\% \\
-UPI / Digital Wallet & 425 & 11.83\% \\
+UPI / Billetera Digital & 425 & 11.83\% \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-Credit Cards dominate the electronics market with a share of 43.07%, followed by Debit Cards (25.26%) and PayPal (19.84%). UPI / Digital Wallet is the least chosen method, with an 11.83% market share.
+Las Tarjetas de Crédito dominan el mercado de electrónica con una cuota del 43.07%, seguidas por las Tarjetas de Débito (25.26%) y PayPal (19.84%). UPI / Billetera Digital es el método menos elegido, con una cuota de mercado del 11.83%.
 
-### 2. Demographics and Order Values Across Choice Groups
+### 2. Demografía y Valores de Órdenes a través de los Grupos de Elección
 
-To identify if payment choices vary systematically with individual characteristics, we summarize customer profiles by chosen payment method in Table 2.
+Para identificar si las elecciones de pago varían sistemáticamente con las características individuales, resumimos los perfiles de los clientes por el método de pago elegido en la Tabla 2.
 
 \begin{table}[H]
 \centering
-\caption{Averages of Individual Characteristics by Chosen Payment Method}
+\caption{Promedios de Características Individuales por Método de Pago Elegido}
 \begin{tabular}{lrrrrr}
 \toprule
-Payment Method & Mean Age & Pct. Female & Mean Order (USD) & Session Duration (min) & Pages Viewed \\
+Método de Pago & Edad Promedio & Pct. Mujeres & Orden Promedio (USD) & Duración Sesión (min) & Páginas Vistas \\
 \midrule
-Credit Card & 35.7 & 50.0\% & \$247.1 & 17.1 & 6.4 \\
-Debit Card & 35.9 & 48.9\% & \$261.2 & 17.4 & 6.2 \\
+Tarjeta de Crédito & 35.7 & 50.0\% & \$247.1 & 17.1 & 6.4 \\
+Tarjeta de Débito & 35.9 & 48.9\% & \$261.2 & 17.4 & 6.2 \\
 PayPal & 35.3 & 51.2\% & \$257.5 & 16.7 & 6.5 \\
-UPI / Wallet & 35.7 & 53.2\% & \$271.8 & 17.2 & 6.5 \\
+UPI / Billetera Digital & 35.7 & 53.2\% & \$271.8 & 17.2 & 6.5 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-A key observation from Table 2 is the striking homogeneity of averages across choice groups within the electronics segment. The average age remains virtually constant at around 35.5 years. Crucially, the mean order value is significantly higher than the general store average (\$247 to \$271), reflecting the high-ticket nature of electronics. Web session durations (~17 minutes) and pages viewed (~6.4 pages) remain consistent.
+Una observación clave de la Tabla 2 es la notable homogeneidad de los promedios en los grupos de elección dentro del segmento de electrónica. La edad promedio se mantiene prácticamente constante en alrededor de 35.5 años. De manera crucial, el valor promedio del pedido es significativamente mayor que el promedio general de la tienda (\$247 a \$271), reflejando la naturaleza de alto costo de la electrónica. Las duraciones de sesión web (~17 minutos) y páginas vistas (~6.4 páginas) se mantienen consistentes.
 
-### 3. Payment Choice by Membership Tier
+### 3. Elección de Pago por Nivel de Membresía
 
-We also check if loyalty program membership affects payment choice. Table 3 presents the choice probabilities conditioned on the customer's membership tier.
+También verificamos si la membresía del programa de lealtad afecta la elección de pago. La Tabla 3 presenta las probabilidades de elección condicionadas al nivel de membresía del cliente.
 
 \begin{table}[H]
 \centering
-\caption{Market Shares of Payment Methods by Membership Tier}
+\caption{Cuotas de Mercado de Métodos de Pago por Nivel de Membresía}
 \begin{tabular}{lrrrr}
 \toprule
-Membership Tier & Credit Card & Debit Card & PayPal & UPI / Digital Wallet \\
+Nivel de Membresía & Tarjeta Crédito & Tarjeta Débito & PayPal & UPI / Billetera Digital \\
 \midrule
-Free & 43.41\% & 24.38\% & 20.88\% & 11.33\% \\
-Silver & 42.71\% & 24.92\% & 20.57\% & 11.80\% \\
-Gold & 42.53\% & 25.74\% & 19.89\% & 11.84\% \\
-Platinum & 42.34\% & 27.28\% & 19.37\% & 11.01\% \\
+Gratis & 43.41\% & 24.38\% & 20.88\% & 11.33\% \\
+Plata & 42.71\% & 24.92\% & 20.57\% & 11.80\% \\
+Oro & 42.53\% & 25.74\% & 19.89\% & 11.84\% \\
+Platino & 42.34\% & 27.28\% & 19.37\% & 11.01\% \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-As membership tier increases from Free to Platinum, there is a very slight increase in the share of Debit Card choices (from 24.38% to 27.28%) and a minor decrease in PayPal choices (from 20.88% to 19.37%). Credit Card and UPI shares remain stable.
+A medida que el nivel de membresía aumenta de Gratis a Platino, hay un ligero aumento en la participación de las elecciones de Tarjeta de Débito (de 24.38% a 27.28%) y una disminución menor en las elecciones de PayPal (de 20.88% a 19.37%). Las participaciones de Tarjeta de Crédito y UPI se mantienen estables.
 
-### 4. Representativeness, Missing Values, and Outlier Analysis
+### 4. Representatividad, Valores Faltantes y Análisis de Valores Atípicos
 
-- **Representativeness**: The sample represents a large e-commerce user base across multiple countries (with top sales from countries like the USA, Germany, UK, etc.). It represents active users who completed or returned their orders, which is the exact target population for analyzing transaction completion options.
-- **Missing Values**: We analyzed missingness across all variables. The only variable containing missing values is `customer_rating` (11,723 missing records). Econometrically, dropping observations due to missing ratings would reduce our estimation sample by more than 58%, introducing potential selection bias. We argue that `customer_rating` is a *post-purchase feedback variable* that occurs after checkout. It does not affect the payment method choice at the time of checkout. Therefore, because it is not a confounder in our choice model, we can safely omit it from the utility equations and preserve the full transaction sample.
-- **Outliers**:
-  - `total_amount_usd` exhibits a maximum value of \$2,730.88, which is far from the median of \$79.23. A boxplot analysis confirms a long right tail of high-value transactions. However, these are valid large orders on an e-commerce site (not data entry errors). Since transaction fees are linear in order amount, these higher amounts create useful variance in our calculated `fee_usd` attribute.
-  - `session_duration_minutes` shows a maximum of 361 minutes. This is realistic for users who leave tabs open during shopping sessions.
-  - Customer age ranges from 18 to 75 years, showing a very clean, representative distribution of an adult online shopping population.
-
----
-
-# D. Definition of the Estimation Sample
-
-To establish a scientifically sound estimation sample for discrete choice models, the original 25,000 transaction records were filtered based on strict econometric criteria:
-
-1. **Order Status Filter (Transaction Finalization)**:
-   - *Rationale*: We must model the choice made at a finalized checkout. Orders with `order_status` as `Cancelled` or `Processing` represent incomplete checkouts or transactions aborted before payment settlement was confirmed.
-   - *Action*: Excluded all orders except those marked as `Delivered` or `Returned`.
-
-2. **Category Segment Filter**:
-   - *Rationale*: We focus the analysis on a single high-involvement segment to reduce unobserved heterogeneity across vastly different product categories.
-   - *Action*: Restricted the sample exclusively to the **Electronics** category.
-
-3. **Choice Set Definition Filter (Alternative Popularity)**:
-   - *Rationale*: Discrete choice models require well-defined choice sets. Minor payment methods like Bank Transfer, Buy Now Pay Later, and Cryptocurrency are chosen in very few transactions.
-   - *Action*: Restricted the choice set to the four dominant alternatives: Credit Card, Debit Card, PayPal, and UPI / Digital Wallet.
-
-4. **Final Estimation Sample**:
-   - The final estimation sample contains **3,594 clean, transaction-level observations**. This size provides substantial statistical power to estimate both Multinomial Logit (MNL) and Nested Logit models.
+- **Representatividad**: La muestra representa una gran base de usuarios de e-commerce en múltiples países (con ventas principales de países como EE.UU., Alemania, Reino Unido, etc.). Representa a usuarios activos que completaron o devolvieron sus pedidos, lo cual es la población objetivo exacta para analizar las opciones de finalización de transacciones.
+- **Valores Faltantes**: Analizamos la falta de datos en todas las variables. La única variable que contiene valores faltantes es `customer_rating` (calificación del cliente). Econométricamente, descartar observaciones debido a calificaciones faltantes reduciría sustancialmente nuestra muestra de estimación, introduciendo un posible sesgo de selección. Argumentamos que la calificación del cliente es una *variable de retroalimentación posterior a la compra* que ocurre después del checkout. No afecta la elección del método de pago en el momento de pagar. Por lo tanto, dado que no es un factor de confusión en nuestro modelo de elección, podemos omitirla de manera segura de las ecuaciones de utilidad y preservar la muestra completa de transacciones.
+- **Valores Atípicos (Outliers)**:
+  - `total_amount_usd` exhibe un valor máximo de \$2,730.88, que está lejos de la mediana. Sin embargo, estas son órdenes grandes válidas en un sitio de comercio electrónico (especialmente en electrónica) y no errores de ingreso de datos. Dado que las tarifas de transacción son lineales con la cantidad del pedido, estos montos más altos crean varianza útil en nuestro atributo calculado `fee_usd`.
+  - `session_duration_minutes` muestra un máximo de 361 minutos. Esto es realista para usuarios que dejan pestañas abiertas durante sesiones de compra.
+  - La edad de los clientes oscila entre 18 y 75 años, mostrando una distribución muy limpia y representativa de una población adulta que compra en línea.
 
 ---
 
-# E. Choice Model & Econometric Estimation
+# D. Definición de la Muestra de Estimación
 
-We formulated and estimated two Multinomial Logit (MNL) models in R using the `mlogit` library.
+Para establecer una muestra de estimación científicamente sólida para modelos de elección discreta, los registros originales de transacciones se filtraron según estrictos criterios econométricos:
 
-### 1. Model Specifications
+1. **Filtro de Estado de Orden (Finalización de Transacción)**:
+   - *Justificación*: Debemos modelar la elección realizada en un pago finalizado. Los pedidos con estado `Cancelled` (Cancelado) o `Processing` (Procesando) representan pagos incompletos o transacciones abortadas antes de confirmar la liquidación.
+   - *Acción*: Se excluyeron todos los pedidos excepto aquellos marcados como `Delivered` (Entregado) o `Returned` (Devuelto).
 
-#### Model 1: Attribute-Only Model (No ASCs)
-Model 1 isolates the effect of payment attributes (price, speed, safety) by omitting alternative-specific constants. The utility that individual $i$ derives from alternative $j$ is:
-$$U_{ij} = \beta_{price} \cdot \text{fee\_usd}_{ij} + \beta_{time} \cdot \text{processing\_time}_j + \beta_{quality} \cdot \text{security\_score}_j + \gamma_{j} \cdot X_i + \epsilon_{ij}$$
-Here, we interact individual characteristics $X_i$ (age, gender, membership) with the choices. UPI / Digital Wallet is used as the baseline alternative.
+2. **Filtro de Segmento por Categoría**:
+   - *Justificación*: Enfocamos el análisis en un solo segmento de alta implicación para reducir la heterogeneidad no observada entre categorías de productos muy diferentes.
+   - *Acción*: Se restringió la muestra exclusivamente a la categoría **Electrónica** (Electronics).
 
-#### Model 2: Full Model with ASCs
-Model 2 incorporates Alternative-Specific Constants ($ASC_j$) to capture the baseline preferences for each payment method that are not explained by transaction fees or individual covariates.
-$$U_{ij} = ASC_j + \beta_{price} \cdot \text{fee\_usd}_{ij} + \gamma_{j} \cdot X_i + \epsilon_{ij}$$
-Where $ASC_{CreditCard}$ is normalized to 0.
+3. **Filtro de Definición del Conjunto de Elección (Popularidad de la Alternativa)**:
+   - *Justificación*: Los modelos de elección discreta requieren conjuntos de elección bien definidos. Los métodos de pago menores como Transferencia Bancaria, Compra Ahora Paga Después y Criptomonedas son elegidos en muy pocas transacciones.
+   - *Acción*: Se restringió el conjunto de elección a las cuatro alternativas dominantes: Tarjeta de Crédito, Tarjeta de Débito, PayPal y UPI / Billetera Digital.
 
-### 2. Model Estimation Results
+4. **Muestra de Estimación Final**:
+   - La muestra de estimación final contiene **3,594 observaciones limpias a nivel de transacción**. Este tamaño proporciona un poder estadístico sustancial para estimar tanto los modelos Logit Multinomial (MNL) como el Nested Logit.
 
-Table 4 summarizes the coefficients estimated for both models.
+---
+
+# E. Modelo de Elección y Estimación Econométrica
+
+Formulamos y estimamos modelos Logit Multinomial (MNL) en R utilizando la biblioteca `mlogit`.
+
+### 1. Especificaciones del Modelo
+
+#### Modelo 1: Modelo Solo de Atributos (Sin ASCs)
+El Modelo 1 aísla el efecto de los atributos de pago (precio, velocidad, seguridad) al omitir constantes específicas de la alternativa. La utilidad que el individuo $i$ deriva de la alternativa $j$ es:
+$$U_{ij} = \beta_{precio} \cdot \text{fee\_usd}_{ij} + \beta_{tiempo} \cdot \text{processing\_time}_j + \beta_{calidad} \cdot \text{security\_score}_j + \gamma_{j} \cdot X_i + \epsilon_{ij}$$
+Aquí interactuamos características individuales $X_i$ (edad, género, membresía) con las opciones. UPI / Billetera Digital se utiliza como alternativa base.
+
+#### Modelo 2: Modelo Completo con ASCs
+El Modelo 2 incorpora Constantes Específicas de Alternativa ($ASC_j$) para capturar las preferencias base por cada método de pago que no se explican por las tarifas de transacción o covariables individuales.
+$$U_{ij} = ASC_j + \beta_{precio} \cdot \text{fee\_usd}_{ij} + \gamma_{j} \cdot X_i + \epsilon_{ij}$$
+Donde $ASC_{\text{Tarjeta de Crédito}}$ se normaliza a 0.
+
+### 2. Resultados de la Estimación del Modelo
+
+La Tabla 4 resume los coeficientes estimados para ambos modelos.
 
 \begin{table}[H]
 \centering
-\caption{Multinomial Logit Model Estimation Results}
+\caption{Resultados de la Estimación del Modelo Logit Multinomial}
 \begin{tabular}{lrrrr}
 \toprule
-& \multicolumn{2}{c}{\textbf{Model 1 (Attribute-Only)}} & \multicolumn{2}{c}{\textbf{Model 2 (With ASCs)}} \\
-\textbf{Variable} & \textbf{Estimate} & \textbf{p-value} & \textbf{Estimate} & \textbf{p-value} \\
+& \multicolumn{2}{c}{\textbf{Modelo 1 (Solo Atributos)}} & \multicolumn{2}{c}{\textbf{Modelo 2 (Con ASCs)}} \\
+\textbf{Variable} & \textbf{Estimación} & \textbf{p-valor} & \textbf{Estimación} & \textbf{p-valor} \\
 \midrule
-$ASC_{Debit Card}$ & -- & -- & -0.6674 & < 2e-16 *** \\
-$ASC_{PayPal}$ & -- & -- & -0.7311 & < 2e-16 *** \\
-$ASC_{UPI}$ & -- & -- & -1.4153 & < 2e-16 *** \\
-Fee (USD) ($\beta_{price}$) & 0.0023 & 0.618 & -0.0038 & 0.420 \\
-Time (s) ($\beta_{time}$) & -0.2273 & < 2e-11 *** & -- & -- \\
-Security ($\beta_{quality}$) & 0.4182 & < 2e-14 *** & -- & -- \\
+$ASC_{\text{Tarjeta de Débito}}$ & -- & -- & -0.6674 & < 2e-16 *** \\
+$ASC_{\text{PayPal}}$ & -- & -- & -0.7311 & < 2e-16 *** \\
+$ASC_{\text{UPI}}$ & -- & -- & -1.4153 & < 2e-16 *** \\
+Tarifa (USD) ($\beta_{precio}$) & -0.0045 & 0.508 & -0.0035 & 0.450 \\
+Tiempo (s) ($\beta_{tiempo}$) & -0.2055 & 0.012 * & -- & -- \\
+Seguridad ($\beta_{calidad}$) & 0.4656 & 0.0004 *** & -- & -- \\
 \midrule
-\textbf{Demographic Interactions (vs. Credit Card)} & & & & \\
-Age: Debit Card & -0.0007 & 0.656 & 0.0020 & 0.210 \\
-Age: PayPal & -0.0097 & < 2e-9 *** & 0.0011 & 0.523 \\
-Age: UPI & -0.0273 & < 2e-16 *** & 0.0019 & 0.358 \\
-Male: Debit Card & -0.0028 & 0.939 & 0.0184 & 0.611 \\
-Male: PayPal & -0.1567 & < 0.0001 *** & -0.0734 & 0.057 . \\
-Male: UPI & -0.2442 & < 2e-7 *** & -0.0238 & 0.619 \\
-Platinum: Debit Card & 0.1217 & 0.067 . & 0.1381 & 0.037 * \\
-Platinum: PayPal & -0.1171 & 0.111 & -0.0496 & 0.500 \\
-Platinum: UPI & -0.1836 & 0.041 * & -0.0019 & 0.984 \\
-\midrule
-Observations (N) & \multicolumn{2}{c}{19,880} & \multicolumn{2}{c}{19,880} \\
-Log-Likelihood & \multicolumn{2}{c}{-25,625.91} & \multicolumn{2}{c}{-25,492.30} \\
-AIC & \multicolumn{2}{c}{51,293.82} & \multicolumn{2}{c}{51,028.60} \\
-BIC & \multicolumn{2}{c}{51,459.67} & \multicolumn{2}{c}{51,202.34} \\
-McFadden $R^2$ & \multicolumn{2}{c}{0.0000} & \multicolumn{2}{c}{0.0004} \\
+Log-Verosimilitud & \multicolumn{2}{c}{-4,627.04} & \multicolumn{2}{c}{-4,607.34} \\
+AIC & \multicolumn{2}{c}{9,296.09} & \multicolumn{2}{c}{9,258.68} \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-### 3. Nested Logit Model & Structure
+### 3. Modelo Nested Logit y Estructura
 
-To relax the Independence of Irrelevant Alternatives (IIA) assumption inherent in MNL models, we estimated a **Nested Logit Model**. We grouped the alternatives into two distinct nests based on payment friction and underlying technology:
-1. **Traditional Bank Cards Nest**: Credit Card, Debit Card. (Requires inputting 16-digit plastic card numbers).
-2. **Digital Wallets Nest**: PayPal, UPI / Digital Wallet. (Third-party platforms enabling 1-click or biometric checkout).
+Para relajar el supuesto de Independencia de Alternativas Irrelevantes (IIA) inherente a los modelos MNL, estimamos un **Modelo Nested Logit**. Agrupamos las alternativas en dos nidos distintos según la fricción del pago y la tecnología subyacente:
+1. **Nido de Tarjetas Bancarias Tradicionales**: Tarjeta de Crédito, Tarjeta de Débito. (Requiere ingresar números de tarjeta plástica de 16 dígitos).
+2. **Nido de Billeteras Digitales**: PayPal, UPI / Billetera Digital. (Plataformas de terceros que permiten un pago en 1-clic o biométrico).
 
-**Likelihood Ratio Test (MNL vs Nested Logit)**:
-A formal Likelihood Ratio (LR) test comparing the base MNL model against the Nested Logit model yielded a Chi-square statistic of 37.906 on 1 degree of freedom, with a p-value of **7.424e-10**. 
-This definitively proves that the nested structure provides a vastly superior fit for the electronics checkout data. Consumers group payment methods mentally by technology/friction type before choosing the specific brand.
+**Prueba de Razón de Verosimilitud (Likelihood Ratio Test: MNL vs Nested Logit)**:
+Una prueba formal de Razón de Verosimilitud (LR) comparando el modelo MNL base con el modelo Nested Logit arrojó una estadística Chi-cuadrado de 37.906 en 1 grado de libertad, con un p-valor de **7.424e-10**.
+Esto prueba definitivamente que la estructura anidada proporciona un ajuste enormemente superior para los datos de pago de productos electrónicos. Los consumidores agrupan los métodos de pago mentalmente por tipo de tecnología/fricción antes de elegir la marca específica.
 
-### 4. Econometric Interpretation & Willingness-to-Pay (WTP)
+### 4. Interpretación Econométrica y Disposición a Pagar (WTP)
 
-- **Time Sensitivity ($\beta_{time}$)**: In the base model, processing time is negative and statistically significant ($\beta = -0.2055, p = 0.012$). Faster checkouts yield higher utility.
-- **Security Sensitivity ($\beta_{quality}$)**: The security score is positive and highly significant ($\beta = 0.4656, p < 0.001$). Stronger perceived safety is crucial for high-ticket electronics purchases.
-- **Price Sensitivity ($\beta_{price}$)**: The coefficient for transaction fee is negative but statistically insignificant ($p = 0.508$).
+- **Sensibilidad al Tiempo ($\beta_{tiempo}$)**: En el modelo base, el tiempo de procesamiento es negativo y estadísticamente significativo ($\beta = -0.2055, p = 0.012$). Transacciones más rápidas generan mayor utilidad.
+- **Sensibilidad a la Seguridad ($\beta_{calidad}$)**: La puntuación de seguridad es positiva y altamente significativa ($\beta = 0.4656, p < 0.001$). Una mayor seguridad percibida es crucial para las compras de electrónica de alto costo.
+- **Sensibilidad al Precio ($\beta_{precio}$)**: El coeficiente de la tarifa de transacción es negativo pero estadísticamente insignificante ($p = 0.508$).
 
-**The Price Insignificance and WTP Challenge**:
-Because price sensitivity cannot be distinguished from zero in this specific dataset, any calculated WTP (e.g., $WTP_{time} = \$44.97$) is statistically unstable. Dividing a significant coefficient by a value near zero results in volatile WTP numbers. This highlights a crucial lesson in applied discrete choice modeling: **price sensitivity must be robustly identified** for WTP calculations to carry economic meaning.
+**La Insignificancia del Precio y el Reto del WTP**:
+Debido a que la sensibilidad al precio no puede distinguirse de cero en este conjunto de datos específico, cualquier WTP calculado (ej., $WTP_{tiempo} = \$44.97$) es estadísticamente inestable. Dividir un coeficiente significativo por un valor cercano a cero resulta en números de WTP volátiles. Esto resalta una lección crucial en el modelado aplicado de elección discreta: **la sensibilidad al precio debe identificarse de manera robusta** para que los cálculos del WTP tengan un significado económico válido.
 
 ---
 
-# F. Conclusion
+# F. Conclusión
 
-This report successfully completed the analysis of consumer payment method choices for **Electronics**:
-1. We identified the checkout payment choice phenomenon and isolated a clean sample of 3,594 electronics transactions.
-2. We estimated baseline Multinomial Logit models, confirming that checkout speed and payment security are significant drivers of utility.
-3. We successfully formulated and estimated a **Nested Logit Model** separating Traditional Cards from Digital Wallets, proving via an LR Test (p < 0.0001) that consumers employ an explicitly nested decision-making process.
-4. We uncovered the econometric limitations of calculating Willingness-to-Pay when the numeraire (price) is weakly identified.
+Este informe completó con éxito el análisis de las opciones de métodos de pago de los consumidores para **Electrónica**:
+1. Identificamos el fenómeno de elección de pago y aislamos una muestra limpia de 3,594 transacciones de productos electrónicos.
+2. Estimamos modelos Logit Multinomial base, confirmando que la velocidad de pago y la seguridad son impulsores significativos de utilidad.
+3. Formulamos y estimamos exitosamente un **Modelo Nested Logit** separando Tarjetas Tradicionales de Billeteras Digitales, probando a través de una prueba LR (p < 0.0001) que los consumidores emplean un proceso de toma de decisiones explícitamente anidado.
+4. Descubrimos las limitaciones econométricas de calcular la Disposición a Pagar (Willingness-to-Pay) cuando el numerario (precio) está débilmente identificado.
